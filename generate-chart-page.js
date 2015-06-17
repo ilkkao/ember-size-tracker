@@ -5,37 +5,45 @@ const fs = require('fs'),
       _ = require('lodash'),
       moment = require('moment');
 
-const dataFile = path.join(__dirname, 'ember-sizes.json');
+const branches = ['canary', 'beta', 'release'];
 const htmlTemplate = path.join(__dirname, 'index.template');
 const htmlFile = path.join(__dirname, 'index.html');
 
-let data = JSON.parse(fs.readFileSync(dataFile));
-let dataArray = [];
+let outputArray = [];
 
-for (let revision of Object.keys(data)) {
-    dataArray.push(data[revision]);
-}
+branches.forEach(function(branch) {
+  let dataFile = path.join(__dirname, `ember-sizes-${branch}.json`);
 
-let labels = [];
-let dataPoints = [];
-let previousDate = '';
+  let data = JSON.parse(fs.readFileSync(dataFile));
+  let dataArray = [];
 
-for (let revision of _.sortBy(dataArray, 'date')) {
-    let date = moment(revision.date).format('MMM D');
-    let label = date === previousDate ? '' : date;
+  for (let revision of Object.keys(data)) {
+      dataArray.push(data[revision]);
+  }
 
-    labels.push(label);
-    dataPoints.push(parseInt(revision.len));
+  let labels = [];
+  let dataPoints = [];
+  let previousDate = '';
 
-    previousDate = date;
-}
+  for (let revision of _.sortBy(dataArray, 'date')) {
+      let date = moment(revision.date).format('MMM D');
+      let label = date === previousDate ? '' : date;
+
+      labels.push(label);
+      dataPoints.push(parseInt(revision.len));
+
+      previousDate = date;
+  }
+  outputArray.push({
+    branch: branch,
+    labels: labels,
+    dataPoints: dataPoints
+  });
+});
 
 let template = fs.readFileSync(htmlTemplate);
 let compiled = _.template(template);
 
-let output = compiled({
-    labels: labels,
-    dataPoints: dataPoints
-});
+let output = compiled({'branches': outputArray});
 
 fs.writeFileSync(htmlFile, output);
