@@ -1,0 +1,18 @@
+{
+  "name": "ember-size-tracker",
+  "version": "0.0.1",
+  "description": "Tracks ember.js library size",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ilkka Oksanen <iao@iki.fi>",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^1.0.2",
+    "github": "^0.2.4",
+    "lodash": "^3.9.3",
+    "moment": "^2.10.3",
+    "superagent": "^1.2.0"
+  }
+}

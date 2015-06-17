@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <title>Ember canary build size tracker</title>
+        <script src="node_modules/chart.js/Chart.min.js"></script>
+
+        <style>
+            body {
+                background-color: #FAF4F1;
+                font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+                padding: 15px;
+                font-size: 14px;
+            }
+
+            .container {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                padding: 35px 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div>
+                <h2>Ember Canary build size (in bytes)</h2>
+            </div>
+        </div>
+
+        <div class="container">
+            <canvas id="myChart" width="90%" height="30%"></canvas>
+        </div>
+
+        <div class="container">
+            <div>
+                This page tracks the size of <b>ember.min.js</b> located in <a href="https://github.com/components/ember/tree/canary">https://github.com/components/ember/tree/canary</a>. Chart is updated once in a day.
+            </div>
+        </div>
+
+        <div class="container">
+            <div>
+                <a href="fpp">Source</a>
+            </div>
+        </div>
+
+        <script>
+            var data = {
+                labels: ${JSON.stringify(labels)},
+                datasets: [{
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(120,120,120,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: ${JSON.stringify(dataPoints)}
+                }]
+            };
+
+            var canvas = document.getElementById("myChart");
+
+            canvas.width = window.innerWidth * 0.85;
+            canvas.height = canvas.width * 0.3;
+
+            var ctx = canvas.getContext("2d");
+            var myNewChart = new Chart(ctx).Line(data, {
+                scaleShowGridLines : true,
+                pointDotRadius: 2,
+                pointHitDetectionRadius: 2
+            });
+        </script>
+    </body>
+</html>
