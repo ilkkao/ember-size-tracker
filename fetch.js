@@ -14,17 +14,14 @@ const branches = ['canary', 'beta', 'release'];
 const baseUrl = 'https://raw.githubusercontent.com/components/ember/';
 
 branches.forEach(function(branch) {
-
   let dataFile = path.join(__dirname, `ember-sizes-${branch}.json`);
-
-  let unseenCommits = {};
-  let data;
+  let knownCommits;
   let fetchesLeft = 0;
 
   try {
-      data = JSON.parse(fs.readFileSync(dataFile));
+      knownCommits = JSON.parse(fs.readFileSync(dataFile));
   } catch(e) {
-      data = {};
+      knownCommits = {};
   }
 
   github.repos.getCommits({
@@ -39,19 +36,19 @@ branches.forEach(function(branch) {
           let sha = item.sha;
           let date = item.commit.author.date;
 
-          if (!data[sha]) {
+          if (!knownCommits[sha]) {
               fetchesLeft++;
 
               request.head(`${baseUrl}${sha}/ember.min.js`).end(function(err, res) {
                   let len = res.header['content-length'];
-                  data[sha] = { date: date, len: len };
+                  knownCommits[sha] = { date: date, len: len };
 
                   console.log(`Fetced size of revision: ${sha} (${date})`);
                   fetchesLeft--;
 
                   if (!fetchesLeft) {
                       console.log('Saving updated data file');
-                      fs.writeFileSync(dataFile, JSON.stringify(data));
+                      fs.writeFileSync(dataFile, JSON.stringify(knownCommits));
                   }
               });
           }
