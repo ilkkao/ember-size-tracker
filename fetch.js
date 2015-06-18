@@ -46,7 +46,7 @@ branches.forEach(function(branch) {
                   let len = res.header['content-length'];
                   data[sha] = { date: date, len: len };
 
-                  console.log(`Fetced size of revision: ${sha} (${date})`);
+                  console.log(`Fetched size of revision: ${sha} (${date})`);
                   fetchesLeft--;
 
                   if (!fetchesLeft) {
