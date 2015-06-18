@@ -10,46 +10,51 @@ const github = new GitHubApi({
     headers: { 'user-agent': 'Ember-libaray-size-tracker' }
 });
 
-const dataFile = path.join(__dirname, 'ember-sizes.json');
+const branches = ['canary', 'beta', 'release'];
 const baseUrl = 'https://raw.githubusercontent.com/components/ember/';
 
-let unseenCommits = {};
-let data;
-let fetchesLeft = 0;
+branches.forEach(function(branch) {
 
-try {
-    data = JSON.parse(fs.readFileSync(dataFile));
-} catch(e) {
-    data = {};
-}
+  let dataFile = path.join(__dirname, `ember-sizes-${branch}.json`);
 
-github.repos.getCommits({
-    user: 'components',
-    repo: 'ember',
-    page: 1,
-    sha: 'canary',
-    path: 'ember.min.js',
-    per_page: 100
-}, function(err, res) {
-    for (let item of res) {
-        let sha = item.sha;
-        let date = item.commit.author.date;
+  let unseenCommits = {};
+  let data;
+  let fetchesLeft = 0;
 
-        if (!data[sha]) {
-            fetchesLeft++;
+  try {
+      data = JSON.parse(fs.readFileSync(dataFile));
+  } catch(e) {
+      data = {};
+  }
 
-            request.head(`${baseUrl}${sha}/ember.min.js`).end(function(err, res) {
-                let len = res.header['content-length'];
-                data[sha] = { date: date, len: len };
+  github.repos.getCommits({
+      user: 'components',
+      repo: 'ember',
+      page: 1,
+      sha: branch,
+      path: 'ember.min.js',
+      per_page: 100
+  }, function(err, res) {
+      for (let item of res) {
+          let sha = item.sha;
+          let date = item.commit.author.date;
 
-                console.log(`Fetced size of revision: ${sha} (${date})`);
-                fetchesLeft--;
+          if (!data[sha]) {
+              fetchesLeft++;
 
-                if (!fetchesLeft) {
-                    console.log('Saving updated data file');
-                    fs.writeFileSync(dataFile, JSON.stringify(data));
-                }
-            });
-        }
-    }
+              request.head(`${baseUrl}${sha}/ember.min.js`).end(function(err, res) {
+                  let len = res.header['content-length'];
+                  data[sha] = { date: date, len: len };
+
+                  console.log(`Fetced size of revision: ${sha} (${date})`);
+                  fetchesLeft--;
+
+                  if (!fetchesLeft) {
+                      console.log('Saving updated data file');
+                      fs.writeFileSync(dataFile, JSON.stringify(data));
+                  }
+              });
+          }
+      }
+  });
 });

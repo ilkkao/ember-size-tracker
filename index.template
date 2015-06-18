@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Ember canary build size tracker</title>
+        <title>Ember build size tracker</title>
         <script src="node_modules/chart.js/Chart.min.js"></script>
 
         <style>
@@ -20,31 +20,24 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <div>
-                <h2>Ember Canary build size (in bytes)</h2>
-            </div>
-        </div>
+
+      <% _.forEach(branches, function(branch) { %>
 
         <div class="container">
-            <canvas id="myChart" width="90%" height="30%"></canvas>
+            <h2>Ember ${branch.branch} build size (in bytes)</h2>
         </div>
-
+        <div class="container">
+            <canvas id="${branch.branch}Chart" width="90%" height="30%"></canvas>
+        </div>
         <div class="container">
             <div>
-                This page tracks the size of <b>ember.min.js</b> located in <a href="https://github.com/components/ember/tree/canary">https://github.com/components/ember/tree/canary</a>. Chart is updated once in a day.
-            </div>
-        </div>
-
-        <div class="container">
-            <div>
-                <a href="https://github.com/ilkkao/ember-size-tracker">Source</a>
+                This chart tracks the size of <b>ember.min.js</b> located in <a href="https://github.com/components/ember/tree/${branch.branch}">https://github.com/components/ember/tree/${branch.branch}</a>. Chart is updated once in a day.
             </div>
         </div>
 
         <script>
             var data = {
-                labels: ${JSON.stringify(labels)},
+                labels: ${JSON.stringify(branch.labels)},
                 datasets: [{
                     fillColor: "rgba(220,220,220,0.2)",
                     strokeColor: "rgba(220,220,220,1)",
@@ -52,11 +45,11 @@
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: ${JSON.stringify(dataPoints)}
+                    data: ${JSON.stringify(branch.dataPoints)}
                 }]
             };
 
-            var canvas = document.getElementById("myChart");
+            var canvas = document.getElementById("${branch.branch}Chart");
 
             canvas.width = window.innerWidth * 0.85;
             canvas.height = canvas.width * 0.3;
@@ -68,5 +61,12 @@
                 pointHitDetectionRadius: 2
             });
         </script>
+      <% }); %>
+
+        <div class="container">
+            <div>
+                <a href="https://github.com/ilkkao/ember-size-tracker">Source</a>
+            </div>
+        </div>
     </body>
 </html>
