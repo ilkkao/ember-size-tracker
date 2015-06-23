@@ -20,7 +20,7 @@
 
             canvas {
                 width: 90% !important;
-                height: 300px;
+                height: 350px;
             }
         </style>
     </head>
@@ -35,7 +35,7 @@
             </div>
             <div class="container">
                 <div>
-                    This chart tracks the size of <b>ember.min.js</b> located in <a href="https://github.com/components/ember/tree/${branch.branch}">https://github.com/components/ember/tree/${branch.branch}</a>. Chart is updated once in a day.
+                    This chart tracks the size of <b>ember.min.js</b> located in <a href="https://github.com/components/ember/tree/${branch.branch}">https://github.com/components/ember/tree/${branch.branch}</a>. Green line shows the gzipped length of file. Chart is updated once in a day.
                 </div>
             </div>
         <% }); %>
@@ -45,7 +45,6 @@
             var canvas;
 
             <% _.forEach(branches, function(branch) { %>
-
                 data["${branch.branch}"] = {
                     labels: ${JSON.stringify(branch.labels)},
                     datasets: [{
@@ -56,6 +55,14 @@
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
                         data: ${JSON.stringify(branch.dataPoints)}
+                    }, {
+                        fillColor: "rgba(120,220,120,0.2)",
+                        strokeColor: "rgba(120,220,120,1)",
+                        pointColor: "rgba(120,120,120,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: ${JSON.stringify(branch.dataPointsGzipped)}
                     }]
                 };
 
@@ -66,7 +73,6 @@
                     pointDotRadius: 2,
                     pointHitDetectionRadius: 2
                 });
-
             <% }); %>
         </script>
 
