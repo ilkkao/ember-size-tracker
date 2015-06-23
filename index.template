@@ -16,29 +16,32 @@
                 display: flex;
                 justify-content: center;
                 width: 100%;
-                padding: 10px 10px;
             }
 
             canvas {
-                width: 90% !important;
+                width: 95% !important;
                 height: 500px;
             }
 
             .green {
                 color: green;
             }
+
+            .group {
+                padding: 20px 0px;
+            }
         </style>
     </head>
     <body>
 
         <% _.forEach(branches, function(branch) { %>
-            <div class="container">
+            <div class="container group">
                 <h2>Ember ${branch.branch} build size (in bytes)</h2>
             </div>
             <div class="container">
                 <canvas id="${branch.branch}Chart" width="90%" height="30%"></canvas>
             </div>
-            <div class="container">
+            <div class="container group">
                 <div>
                     This chart tracks the size of <b>ember.min.js</b> located in <a href="https://github.com/components/ember/tree/${branch.branch}">https://github.com/components/ember/tree/${branch.branch}</a>. <span class="green">Green line</span> shows the gzipped size. Chart is updated once in a day.
                 </div>
@@ -48,6 +51,9 @@
         <script>
             var data = {};
             var canvas;
+
+            Chart.defaults.global.responsive = true;
+            Chart.defaults.global.scaleFontSize = 10;
 
             <% _.forEach(branches, function(branch) { %>
                 data["${branch.branch}"] = {

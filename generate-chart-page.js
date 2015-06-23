@@ -25,10 +25,6 @@ branches.forEach(function(branch) {
     let dataPoints = [];
     let dataPointsGzipped = [];
 
-    dataPoints.push(0);
-    dataPointsGzipped.push(0);
-    labels.push('');
-
     for (let revision of _.sortBy(dataArray, 'date')) {
         let unixTime = moment(revision.date).unix() * 1000;
 
