@@ -56,26 +56,23 @@
             Chart.defaults.global.scaleFontSize = 10;
 
             <% _.forEach(branches, function(branch) { %>
-                data["${branch.branch}"] = {
-                    labels: ${JSON.stringify(branch.timeStamps)},
-                    datasets: [{
-                        fillColor: "rgba(220,220,220,0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(120,120,120,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: ${JSON.stringify(branch.dataPoints)}
-                    }, {
-                        fillColor: "rgba(120,220,120,0.2)",
-                        strokeColor: "rgba(120,220,120,1)",
-                        pointColor: "rgba(120,120,120,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: ${JSON.stringify(branch.dataPointsGzipped)}
-                    }]
-                };
+                data["${branch.branch}"] = [{
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(120,120,120,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: ${JSON.stringify(branch.dataPoints)}
+                }, {
+                    fillColor: "rgba(120,220,120,0.2)",
+                    strokeColor: "rgba(120,220,120,1)",
+                    pointColor: "rgba(120,120,120,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: ${JSON.stringify(branch.dataPointsGzipped)}
+                }];
 
                 canvas = document.getElementById("${branch.branch}Chart");
 
