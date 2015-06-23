@@ -50,7 +50,7 @@ branches.forEach(function(branch) {
 
                     if (!fetchesLeft) {
                         console.log('Saving updated data file');
-                        fs.writeFileSync(dataFile, JSON.stringify(knownCommits));
+                        fs.writeFileSync(dataFile, JSON.stringify(knownCommits, null, 2));
                     }
                 });
             }

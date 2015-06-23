@@ -8,19 +8,23 @@
                 background-color: #FAF4F1;
                 font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
                 padding: 15px;
-                font-size: 14px;
+                font-size: 12px;
             }
 
             .container {
                 display: flex;
                 justify-content: center;
                 width: 100%;
-                padding: 35px 10px;
+                padding: 10px 10px;
             }
 
             canvas {
                 width: 90% !important;
-                height: 350px;
+                height: 500px;
+            }
+
+            .green {
+                color: green;
             }
         </style>
     </head>
@@ -35,7 +39,7 @@
             </div>
             <div class="container">
                 <div>
-                    This chart tracks the size of <b>ember.min.js</b> located in <a href="https://github.com/components/ember/tree/${branch.branch}">https://github.com/components/ember/tree/${branch.branch}</a>. Green line shows the gzipped length of file. Chart is updated once in a day.
+                    This chart tracks the size of <b>ember.min.js</b> located in <a href="https://github.com/components/ember/tree/${branch.branch}">https://github.com/components/ember/tree/${branch.branch}</a>. <span class="green">Green line</span> shows the gzipped size. Chart is updated once in a day.
                 </div>
             </div>
         <% }); %>

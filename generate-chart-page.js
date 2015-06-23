@@ -5,7 +5,7 @@ const fs = require('fs'),
       _ = require('lodash'),
       moment = require('moment');
 
-const branches = ['canary', 'beta', 'release'];
+const branches = [ 'release', 'beta', 'canary' ];
 const htmlTemplate = path.join(__dirname, 'index.template');
 const htmlFile = path.join(__dirname, 'index.html');
 
@@ -25,6 +25,10 @@ branches.forEach(function(branch) {
     let dataPoints = [];
     let dataPointsGzipped = [];
     let previousDate = '';
+
+    dataPoints.push(0);
+    dataPointsGzipped.push(0);
+    labels.push('');
 
     for (let revision of _.sortBy(dataArray, 'date')) {
         let date = moment(revision.date).format('MMM D');
