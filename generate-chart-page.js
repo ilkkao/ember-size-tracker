@@ -6,6 +6,13 @@ const fs = require('fs'),
       moment = require('moment');
 
 const branches = [ 'release', 'beta', 'canary' ];
+
+const trackingPeriods = {
+    release: moment.duration(3, 'years'),
+    beta: moment.duration(2, 'months'),
+    canary: moment.duration(2, 'months')
+};
+
 const htmlTemplate = path.join(__dirname, 'index.template');
 const htmlFile = path.join(__dirname, 'index.html');
 
@@ -26,8 +33,11 @@ branches.forEach(function(branch) {
     let dataPointsGzipped = [];
 
     for (let revision of _.sortBy(dataArray, 'date')) {
-        let unixTime = moment(revision.date).unix() * 1000;
+        if (moment(revision.date) < moment().subtract(trackingPeriods[branch])) {
+            continue;
+        }
 
+        let unixTime = moment(revision.date).unix() * 1000;
         dataPoints.push({ x: unixTime, y: parseInt(revision.len) });
         dataPointsGzipped.push({ x: unixTime, y: parseInt(revision.gzippedLen) });
     }
@@ -36,7 +46,8 @@ branches.forEach(function(branch) {
         branch: branch,
         timeStamps: timeStamps,
         dataPoints: dataPoints,
-        dataPointsGzipped: dataPointsGzipped
+        dataPointsGzipped: dataPointsGzipped,
+        trackingPeriod: branch === 'release' ? '3 years' : '2 months'
     });
 });
 

@@ -36,7 +36,7 @@
 
         <% _.forEach(branches, function(branch) { %>
             <div class="container group">
-                <h2>Ember ${branch.branch} build size (in bytes)</h2>
+                <h2>Ember ${branch.branch} build size (in bytes). Tracking period <%= branch.trackingPeriod %>.</h2>
             </div>
             <div class="container">
                 <canvas id="${branch.branch}Chart" width="90%" height="30%"></canvas>
@@ -67,7 +67,7 @@
                 }, {
                     fillColor: "rgba(120,220,120,0.2)",
                     strokeColor: "rgba(120,220,120,1)",
-                    pointColor: "rgba(120,120,120,1)",
+                    pointColor: "rgba(120,220,120,1)",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
