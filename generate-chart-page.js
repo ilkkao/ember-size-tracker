@@ -21,28 +21,24 @@ branches.forEach(function(branch) {
         dataArray.push(data[revision]);
     }
 
-    let labels = [];
+    let timeStamps = [];
     let dataPoints = [];
     let dataPointsGzipped = [];
-    let previousDate = '';
 
     dataPoints.push(0);
     dataPointsGzipped.push(0);
     labels.push('');
 
     for (let revision of _.sortBy(dataArray, 'date')) {
-        let date = moment(revision.date).format('MMM D');
-        let label = date === previousDate ? '' : date;
+        let unixTime = moment(revision.date).unix() * 1000;
 
-        labels.push(label);
-        dataPoints.push(parseInt(revision.len));
-        dataPointsGzipped.push(parseInt(revision.gzippedLen));
-
-        previousDate = date;
+        dataPoints.push({ x: unixTime, y: parseInt(revision.len) });
+        dataPointsGzipped.push({ x: unixTime, y: parseInt(revision.gzippedLen) });
     }
+
     outputArray.push({
         branch: branch,
-        labels: labels,
+        timeStamps: timeStamps,
         dataPoints: dataPoints,
         dataPointsGzipped: dataPointsGzipped
     });

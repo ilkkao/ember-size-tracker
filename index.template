@@ -2,6 +2,7 @@
     <head>
         <title>Ember build size tracker</title>
         <script src="node_modules/chart.js/Chart.min.js"></script>
+        <script src="Chart.Scatter.min.js"></script>
 
         <style>
             body {
@@ -50,7 +51,7 @@
 
             <% _.forEach(branches, function(branch) { %>
                 data["${branch.branch}"] = {
-                    labels: ${JSON.stringify(branch.labels)},
+                    labels: ${JSON.stringify(branch.timeStamps)},
                     datasets: [{
                         fillColor: "rgba(220,220,220,0.2)",
                         strokeColor: "rgba(220,220,220,1)",
@@ -72,10 +73,13 @@
 
                 canvas = document.getElementById("${branch.branch}Chart");
 
-                new Chart(canvas.getContext("2d")).Line(data["${branch.branch}"], {
+                new Chart(canvas.getContext("2d")).Scatter(data["${branch.branch}"], {
                     scaleShowGridLines : true,
                     pointDotRadius: 2,
-                    pointHitDetectionRadius: 2
+                    pointHitDetectionRadius: 2,
+                    scaleType: "date",
+                    scaleDateFormat: "mmm d yyyy",
+                    scaleDateTimeFormat: "mmm d, yyyy"
                 });
             <% }); %>
         </script>
