@@ -82,7 +82,8 @@
                     pointHitDetectionRadius: 2,
                     scaleType: "date",
                     scaleDateFormat: "mmm d yyyy",
-                    scaleDateTimeFormat: "mmm d, yyyy"
+                    scaleDateTimeFormat: "mmm d, yyyy",
+                    bezierCurve: false
                 });
             <% }); %>
         </script>
