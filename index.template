@@ -33,7 +33,6 @@
         </style>
     </head>
     <body>
-
         <% _.forEach(branches, function(branch) { %>
             <div class="container group">
                 <h2>Ember ${branch.branch} build size (in bytes). Tracking period <%= branch.trackingPeriod %>.</h2>
@@ -56,33 +55,35 @@
             Chart.defaults.global.scaleFontSize = 10;
 
             <% _.forEach(branches, function(branch) { %>
-                data["${branch.branch}"] = [{
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "black",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#000",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
+                data['${branch.branch}'] = [{
+                    fillColor: 'rgba(220,220,220,0.2)',
+                    strokeColor: 'rgba(220,220,220,1)',
+                    pointColor: 'black',
+                    pointStrokeColor: '#fff',
+                    pointHighlightFill: '#000',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
                     data: ${JSON.stringify(branch.dataPoints)}
                 }, {
-                    fillColor: "rgba(120,220,120,0.2)",
-                    strokeColor: "rgba(120,220,120,1)",
-                    pointColor: "black",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    fillColor: 'rgba(120,220,120,0.2)',
+                    strokeColor: 'rgba(120,220,120,1)',
+                    pointColor: 'black',
+                    pointStrokeColor: '#fff',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
                     data: ${JSON.stringify(branch.dataPointsGzipped)}
                 }];
 
-                canvas = document.getElementById("${branch.branch}Chart");
+                canvas = document.getElementById('${branch.branch}Chart');
 
-                new Chart(canvas.getContext("2d")).Scatter(data["${branch.branch}"], {
+                new Chart(canvas.getContext('2d')).Scatter(data['${branch.branch}'], {
+                    scaleLineColor: 'rgba(0, 0 , 0, 0.7)',
+                    scaleGridLineColor: 'rgba(0, 0 ,0, 0.1)',
                     scaleShowGridLines : true,
                     pointDotRadius: 2,
                     pointHitDetectionRadius: 2,
-                    scaleType: "date",
-                    scaleDateFormat: "mmm d yyyy",
-                    scaleDateTimeFormat: "mmm d, yyyy",
+                    scaleType: 'date',
+                    scaleDateFormat: '${branch.branch}' === 'release' ? 'mmm yyyy' : 'mmm d yyyy',
+                    scaleDateTimeFormat: '${branch.branch}' === 'release' ? 'mmm yyyy' : 'mmm d yyyy',
                     bezierCurve: false,
                     datasetStrokeWidth: 3,
                 });
