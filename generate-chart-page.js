@@ -22,25 +22,24 @@ branches.forEach(function(branch) {
     let dataFile = path.join(__dirname, `ember-sizes-${branch}.json`);
 
     let data = JSON.parse(fs.readFileSync(dataFile));
-    let dataArray = [];
-
-    for (let revision of Object.keys(data)) {
-        dataArray.push(data[revision]);
-    }
-
     let timeStamps = [];
     let dataPoints = [];
     let dataPointsGzipped = [];
+    let periodStart = moment().subtract(trackingPeriods[branch]);
 
-    for (let revision of _.sortBy(dataArray, 'date')) {
-        if (moment(revision.date) < moment().subtract(trackingPeriods[branch])) {
+    for (let revision of _.sortBy(_.values(data), 'date')) {
+        if (moment(revision.date) < periodStart) {
             continue;
         }
 
-        let unixTime = moment(revision.date).unix() * 1000;
-        dataPoints.push({ x: unixTime, y: parseInt(revision.len) });
-        dataPointsGzipped.push({ x: unixTime, y: parseInt(revision.gzippedLen) });
+        let unixTs = moment(revision.date).valueOf();
+        dataPoints.push({ x: unixTs, y: parseInt(revision.len) });
+        dataPointsGzipped.push({ x: unixTs, y: parseInt(revision.gzippedLen) });
     }
+
+    // Add a dummy point to make sure data period is exact
+    dataPoints.unshift({ x: periodStart.valueOf(), y: dataPoints[0].y });
+    dataPointsGzipped.unshift({ x: periodStart.valueOf(), y: dataPointsGzipped[0].y });
 
     outputArray.push({
         branch: branch,
