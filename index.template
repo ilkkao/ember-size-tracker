@@ -85,8 +85,7 @@
                     scaleDateFormat: '${branch.branch}' === 'release' ? 'mmm yyyy' : 'mmm d yyyy',
                     scaleDateTimeFormat: '${branch.branch}' === 'release' ? 'mmm yyyy' : 'mmm d yyyy',
                     bezierCurve: false,
-                    datasetStrokeWidth: 3,
-                    maintainAspectRatio: false,
+                    datasetStrokeWidth: 3
                 });
             <% }); %>
         </script>
